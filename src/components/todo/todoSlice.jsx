@@ -21,9 +21,14 @@ const todoSlice = createSlice({
             };
 
             state.push(todo);
+        },
+        toggleComplete: (state, action) => {
+            const index = state.findIndex((todo) => todo.id === action.payload.id);
+            state[index].completed = action.payload.completed;
         }
     }
+
 });
 
-export const { addTodo } = todoSlice.actions;
+export const { addTodo, toggleComplete } = todoSlice.actions;
 export default todoSlice.reducer; 
