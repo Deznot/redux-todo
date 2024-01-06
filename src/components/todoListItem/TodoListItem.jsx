@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import "./todoListItem.scss";
-import { toggleComplete } from "../todo/todoSlice";
+import { toggleComplete, deleteTodo } from "../todo/todoSlice";
 
 const TodoListItem = ({id,title,completed, ...props}) => {
     const dispatch = useDispatch();
@@ -10,8 +10,12 @@ const TodoListItem = ({id,title,completed, ...props}) => {
         )
     }
 
+    const hundleDeleteClick = () => {
+        dispatch(deleteTodo({id}))
+    }
+
     return (
-        <li className="list-item" onClick={props.onClick}>
+        <li className="list-item">
             <div>
                 <input
                     type='checkbox'
@@ -21,7 +25,7 @@ const TodoListItem = ({id,title,completed, ...props}) => {
                     readOnly
                 ></input>
                 {title}
-                <button className='btn btn-danger'>Delete</button>
+                <button onClick={hundleDeleteClick} className='btn btn-danger'>Delete</button>
             </div>
             
         </li>
