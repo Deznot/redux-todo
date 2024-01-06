@@ -10,7 +10,7 @@ const TodoList = () => {
     }
 
     const listItems = todos.map(({ id, ...props }) => {
-        return <TodoListItem {...props} key={id} onClick={() => onClick(id)} />;
+        return <TodoListItem {...props} id={id} key={id} onClick={() => onClick(id)} />;
     });
 
     return (
