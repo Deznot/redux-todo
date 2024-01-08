@@ -26,29 +26,30 @@ const todoSlice = createSlice({
                 title: action.payload.title,
                 completed: false,
             };
-            state.todos.push(todo);
+            return { ...state, todos: [...state.todos, todo] }
         },
         toggleComplete: (state, action) => {
             const index = state.todos.findIndex((todo) => todo.id === action.payload.id);
             state.todos[index].completed = action.payload.completed;
         },
         deleteTodo: (state, action) => {
-            return state.todos.filter((el) => el.id !== action.payload.id);
+            return { ...state, todos: [...state.todos.filter((el) => el.id !== action.payload.id)] }
         }
     },
     extraReducers: (builder) => {
         builder
+            .addCase(getTodosAsync.pending, state => {
+                state.todosLoadingStatus = 'loading'
+            })
             .addCase(getTodosAsync.fulfilled, (state, action) => {
                 return {
                     ...state,
-                    todos: [...action.payload.todos]
+                    todos: [...action.payload.todos],
+                    todosLoadingStatus: 'idle'
                 }
             })
-            .addCase(getTodosAsync.pending, state => {
-
-            })
             .addCase(getTodosAsync.rejected, (state, action) => {
-
+                state.todosLoadingStatus = 'error'
             })
             .addDefaultCase(() => { })
     }
