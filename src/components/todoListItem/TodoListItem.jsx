@@ -1,8 +1,9 @@
 import { useDispatch } from "react-redux";
 import "./todoListItem.scss";
 import { toggleComplete, deleteTodo } from "../todo/todoSlice";
+import { deleteTodosAsync } from "../todo/todoSlice";
 
-const TodoListItem = ({id,title,completed, ...props}) => {
+const TodoListItem = ({ id, title, completed, ...props }) => {
     const dispatch = useDispatch();
     const handleCheckboxClick = () => {
         dispatch(
@@ -11,7 +12,7 @@ const TodoListItem = ({id,title,completed, ...props}) => {
     }
 
     const hundleDeleteClick = () => {
-        dispatch(deleteTodo({id}))
+        dispatch(deleteTodosAsync({ id }));
     }
 
     return (
@@ -27,7 +28,7 @@ const TodoListItem = ({id,title,completed, ...props}) => {
                 {title}
                 <button onClick={hundleDeleteClick} className='btn btn-danger'>Delete</button>
             </div>
-            
+
         </li>
     );
 };

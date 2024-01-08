@@ -27,6 +27,15 @@ export const addTodosAsync = createAsyncThunk(
     }
 );
 
+export const deleteTodosAsync = createAsyncThunk(
+    'todos/deleteTodosAsync',
+    async (payload) => {
+        const { request } = useHttp();
+        await request(`http://localhost:3001/todos/${payload.id}`, "DELETE");
+        return { id: payload.id };
+    }
+);
+
 const initialState = {
     todosLoadingStatus: 'idle',
     todos: []
@@ -36,20 +45,9 @@ const todoSlice = createSlice({
     name: 'todos',
     initialState,
     reducers: {
-        addTodo: (state, action) => {
-            const todo = {
-                id: nanoid(),
-                title: action.payload.title,
-                completed: false,
-            };
-            return { ...state, todos: [...state.todos, todo] }
-        },
         toggleComplete: (state, action) => {
             const index = state.todos.findIndex((todo) => todo.id === action.payload.id);
             state.todos[index].completed = action.payload.completed;
-        },
-        deleteTodo: (state, action) => {
-            return { ...state, todos: [...state.todos.filter((el) => el.id !== action.payload.id)] }
         }
     },
     extraReducers: (builder) => {
@@ -78,6 +76,19 @@ const todoSlice = createSlice({
                 }
             })
             .addCase(addTodosAsync.rejected, (state, action) => {
+                state.todosLoadingStatus = 'error'
+            })
+            .addCase(deleteTodosAsync.pending, state => {
+                state.todosLoadingStatus = 'loading'
+            })
+            .addCase(deleteTodosAsync.fulfilled, (state, action) => {
+                return {
+                    ...state,
+                    todosLoadingStatus: 'idle',
+                    todos: state.todos.filter(el => el.id !== action.payload.id),
+                }
+            })
+            .addCase(deleteTodosAsync.rejected, (state, action) => {
                 state.todosLoadingStatus = 'error'
             })
             .addDefaultCase(() => { })
