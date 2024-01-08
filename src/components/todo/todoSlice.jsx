@@ -11,6 +11,22 @@ export const getTodosAsync = createAsyncThunk(
     }
 );
 
+export const addTodosAsync = createAsyncThunk(
+    'todos/addTodosAsync',
+    async (payload) => {
+        const { request } = useHttp();
+        const todo = {
+            id: nanoid(),
+            title: payload.title,
+            completed: false,
+        };
+
+        const todos = await request("http://localhost:3001/todos", "POST", JSON.stringify(todo));
+
+        return { todos };
+    }
+);
+
 const initialState = {
     todosLoadingStatus: 'idle',
     todos: []
@@ -49,6 +65,19 @@ const todoSlice = createSlice({
                 }
             })
             .addCase(getTodosAsync.rejected, (state, action) => {
+                state.todosLoadingStatus = 'error'
+            })
+            .addCase(addTodosAsync.pending, state => {
+                state.todosLoadingStatus = 'loading'
+            })
+            .addCase(addTodosAsync.fulfilled, (state, action) => {
+                return {
+                    ...state,
+                    todosLoadingStatus: 'idle',
+                    todos: [...state.todos, action.payload.todos],
+                }
+            })
+            .addCase(addTodosAsync.rejected, (state, action) => {
                 state.todosLoadingStatus = 'error'
             })
             .addDefaultCase(() => { })

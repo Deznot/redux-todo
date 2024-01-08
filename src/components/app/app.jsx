@@ -6,7 +6,7 @@ const App = () => {
     return (
         <main>
             <div className="content">
-                {/* <AddTodoForm /> */}
+                <AddTodoForm />
                 <TodoList />
             </div>
         </main>
