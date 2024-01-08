@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import { getTodosAsync } from '../todo/todoSlice';
 
 const TodoList = () => {
-    const todos = useSelector(state => state.todos);
+    const todos = useSelector(state => state.todos.todos);
     const dispatch = useDispatch();
 
     useEffect(() => {

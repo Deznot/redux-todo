@@ -11,13 +11,10 @@ export const getTodosAsync = createAsyncThunk(
     }
 );
 
-const initialState = [
-    // { id: 1, title: 'todo1', completed: false },
-    // { id: 2, title: 'todo2', completed: false },
-    // { id: 3, title: 'todo3', completed: true },
-    // { id: 4, title: 'todo4', completed: false },
-    // { id: 5, title: 'todo5', completed: false },
-];
+const initialState = {
+    todosLoadingStatus: 'idle',
+    todos: []
+};
 
 const todoSlice = createSlice({
     name: 'todos',
@@ -29,21 +26,23 @@ const todoSlice = createSlice({
                 title: action.payload.title,
                 completed: false,
             };
-
-            state.push(todo);
+            state.todos.push(todo);
         },
         toggleComplete: (state, action) => {
-            const index = state.findIndex((todo) => todo.id === action.payload.id);
-            state[index].completed = action.payload.completed;
+            const index = state.todos.findIndex((todo) => todo.id === action.payload.id);
+            state.todos[index].completed = action.payload.completed;
         },
         deleteTodo: (state, action) => {
-            return state.filter((el) => el.id !== action.payload.id);
+            return state.todos.filter((el) => el.id !== action.payload.id);
         }
     },
     extraReducers: (builder) => {
         builder
             .addCase(getTodosAsync.fulfilled, (state, action) => {
-                return state = action.payload.todos;
+                return {
+                    ...state,
+                    todos: [...action.payload.todos]
+                }
             })
             .addCase(getTodosAsync.pending, state => {
 
