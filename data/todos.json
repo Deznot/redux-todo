@@ -8,7 +8,7 @@
     {
       "id": 2,
       "title": "todo2",
-      "completed": false
+      "completed": true
     },
     {
       "id": 3,
@@ -18,17 +18,17 @@
     {
       "id": 4,
       "title": "todo4",
-      "completed": false
+      "completed": true
     },
     {
       "id": 5,
       "title": "todo5",
-      "completed": false
+      "completed": true
     },
     {
       "id": "N8r1z-yCQxGQJs7p3K8bz",
       "title": "qwe",
-      "completed": false
+      "completed": true
     }
   ]
 }

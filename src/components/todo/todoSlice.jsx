@@ -36,6 +36,15 @@ export const deleteTodosAsync = createAsyncThunk(
     }
 );
 
+export const toggleCompleteAsync = createAsyncThunk(
+    'todos/completeTodoAsync',
+    async (payload) => {
+        const { request } = useHttp();
+        await request(`http://localhost:3001/todos/${payload.id}`, "PATCH", JSON.stringify({ completed: payload.completed }));
+        return { id: payload.id };
+    }
+);
+
 const initialState = {
     todosLoadingStatus: 'idle',
     todos: []
@@ -90,6 +99,8 @@ const todoSlice = createSlice({
             })
             .addCase(deleteTodosAsync.rejected, (state, action) => {
                 state.todosLoadingStatus = 'error'
+            })
+            .addCase(toggleCompleteAsync.fulfilled, (state, action) => {
             })
             .addDefaultCase(() => { })
     }
