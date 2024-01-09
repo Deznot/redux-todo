@@ -40,8 +40,8 @@ export const toggleCompleteAsync = createAsyncThunk(
     'todos/completeTodoAsync',
     async (payload) => {
         const { request } = useHttp();
-        await request(`http://localhost:3001/todos/${payload.id}`, "PATCH", JSON.stringify({ completed: payload.completed }));
-        return { id: payload.id };
+        const todo = await request(`http://localhost:3001/todos/${payload.id}`, "PATCH", JSON.stringify({ completed: payload.completed }));
+        return {todo}
     }
 );
 
@@ -101,6 +101,16 @@ const todoSlice = createSlice({
                 state.todosLoadingStatus = 'error'
             })
             .addCase(toggleCompleteAsync.fulfilled, (state, action) => {
+                return {
+                    ...state,
+                    todosLoadingStatus : 'idle',
+                    todos: state.todos.map((el) => {
+                        if (el.id === action.payload.todo.id) {
+                            return { ...el, completed : action.payload.todo.completed}
+                        }
+                        return el;
+                    })
+                }
             })
             .addDefaultCase(() => { })
     }

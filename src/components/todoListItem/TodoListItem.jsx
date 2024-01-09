@@ -1,6 +1,7 @@
 import { useDispatch } from "react-redux";
 import "./todoListItem.scss";
 import { deleteTodosAsync, toggleCompleteAsync } from "../todo/todoSlice";
+import { useState } from "react";
 
 const TodoListItem = ({ id, title, completed, ...props }) => {
     const dispatch = useDispatch();
@@ -17,13 +18,15 @@ const TodoListItem = ({ id, title, completed, ...props }) => {
     return (
         <li className="list-item">
             <div>
-                <input
-                    type='checkbox'
-                    className='mr-3'
-                    onClick={handleCheckboxClick}
-                    checked={completed}
-                    readOnly
-                ></input>
+                <span>
+                    <input
+                        type='checkbox'
+                        className='mr-3'
+                        onClick={handleCheckboxClick}
+                        checked={completed}
+                        readOnly
+                    ></input>
+                </span>
                 {title}
                 <button onClick={hundleDeleteClick} className='btn btn-danger'>Delete</button>
             </div>
