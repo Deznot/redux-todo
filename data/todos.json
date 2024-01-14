@@ -3,12 +3,12 @@
     {
       "id": "1",
       "title": "todo1",
-      "completed": true
+      "completed": false
     },
     {
       "id": "2",
       "title": "todo2",
-      "completed": true
+      "completed": false
     },
     {
       "id": "3",
@@ -28,11 +28,16 @@
     {
       "id": "N8r1z-yCQxGQJs7p3K8bz",
       "title": "qwe",
-      "completed": true
+      "completed": false
     },
     {
       "id": "OW14U5kOxN2dIeBIfUBss",
       "title": "qwer",
+      "completed": false
+    },
+    {
+      "id": "BvPwyhflrpycEgdLi7VyG",
+      "title": "qweqwe",
       "completed": false
     }
   ]
