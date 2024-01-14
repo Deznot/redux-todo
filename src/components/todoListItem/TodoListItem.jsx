@@ -1,7 +1,6 @@
 import { useDispatch } from "react-redux";
 import "./todoListItem.scss";
 import { deleteTodosAsync, toggleCompleteAsync } from "../todo/todoSlice";
-import { useState } from "react";
 
 const TodoListItem = ({ id, title, completed, ...props }) => {
     const dispatch = useDispatch();
@@ -11,12 +10,13 @@ const TodoListItem = ({ id, title, completed, ...props }) => {
         )
     }
 
-    const hundleDeleteClick = () => {
+    const hundleDeleteClick = (e) => {
+        e.stopPropagation();
         dispatch(deleteTodosAsync({ id }));
     }
 
     return (
-        <li className="list-item">
+        <li className="list-item" completed={`${completed}`} onClick={(e) => props.onClick(id, completed)}>
             <div>
                 <span>
                     <input
@@ -28,7 +28,7 @@ const TodoListItem = ({ id, title, completed, ...props }) => {
                     ></input>
                 </span>
                 {title}
-                <button onClick={hundleDeleteClick} className='btn btn-danger'>Delete</button>
+                <button onClick={(e) => hundleDeleteClick(e)} className='btn btn-danger'>Delete</button>
             </div>
 
         </li>

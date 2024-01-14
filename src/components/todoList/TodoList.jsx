@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import './todoList.scss';
 import TodoListItem from '../todoListItem/TodoListItem';
 import { useEffect } from 'react';
-import { getTodosAsync } from '../todo/todoSlice';
+import { getTodosAsync,toggleCompleteAsync } from '../todo/todoSlice';
 import Spinner from "../spinner/Spinner";
 
 const TodoList = () => {
@@ -15,8 +15,10 @@ const TodoList = () => {
     }, [dispatch]);
 
 
-    const onClick = (id) => {
-        console.log(id);
+    const onClick = (id,completed) => {
+        dispatch(
+            toggleCompleteAsync({ id, completed: !completed })
+        )
     }
 
     if (todosLoadingStatus === "loading") {
@@ -26,7 +28,7 @@ const TodoList = () => {
     }
 
     const listItems = todos.map(({ id, ...props }) => {
-        return <TodoListItem {...props} id={id} key={id} onClick={() => onClick(id)} />;
+        return <TodoListItem {...props} id={id} key={id} onClick={() => onClick(id, props.completed)} />;
     });
 
     return (
