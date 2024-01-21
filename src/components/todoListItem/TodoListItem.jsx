@@ -1,18 +1,25 @@
 import { useDispatch } from "react-redux";
 import "./todoListItem.scss";
 import { deleteTodosAsync, toggleCompleteAsync } from "../todo/todoSlice";
+import { useDeleteTodoMutation } from '../api/apiSlice';
 
 const TodoListItem = ({ id, title, completed, ...props }) => {
     const dispatch = useDispatch();
+    const [deleteTodo, {isLoading}] = useDeleteTodoMutation();
     const handleCheckboxClick = () => {
         dispatch(
             toggleCompleteAsync({ id, completed: !completed })
         )
     }
 
-    const hundleDeleteClick = (e) => {
+    const hundleDeleteClick = async (e) => {
         e.stopPropagation();
-        dispatch(deleteTodosAsync({ id }));
+        try {
+            await deleteTodo(id).unwrap();
+        } catch (err) {
+            console.error('Failed to delete todos: ', err)
+        }
+        // dispatch(deleteTodosAsync({ id }));
     }
 
     return (
