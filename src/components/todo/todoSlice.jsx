@@ -37,10 +37,10 @@ export const deleteTodosAsync = createAsyncThunk(
 );
 
 export const toggleCompleteAsync = createAsyncThunk(
-    'todos/completeTodoAsync',
+    'todos/toggleCompleteAsync',
     async (payload) => {
         const { request } = useHttp();
-        const todo = await request(`http://localhost:3001/todos/${payload.id}`, "PATCH", JSON.stringify({ completed: payload.completed }));
+        const todo = await request(`http://localhost:3001/todos/${payload.id}`, "PATCH", JSON.stringify({id: payload.id, completed: payload.completed }));
         return {todo}
     }
 );
@@ -54,10 +54,10 @@ const todoSlice = createSlice({
     name: 'todos',
     initialState,
     reducers: {
-        toggleComplete: (state, action) => {
-            const index = state.todos.findIndex((todo) => todo.id === action.payload.id);
-            state.todos[index].completed = action.payload.completed;
-        }
+        // toggleComplete: (state, action) => {
+        //     const index = state.todos.findIndex((todo) => todo.id === action.payload.id);
+        //     state.todos[index].completed = action.payload.completed;
+        // }
     },
     extraReducers: (builder) => {
         builder
@@ -111,6 +111,12 @@ const todoSlice = createSlice({
                         return el;
                     })
                 }
+            })
+            .addCase(toggleCompleteAsync.pending, state => {
+                state.todosLoadingStatus = 'loading'
+            })
+            .addCase(toggleCompleteAsync.rejected, (state) => {
+                state.todosLoadingStatus = 'error'
             })
             .addDefaultCase(() => { })
     }

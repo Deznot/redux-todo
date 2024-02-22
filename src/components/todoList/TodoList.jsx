@@ -1,15 +1,15 @@
-import { useDispatch, useSelector } from 'react-redux';
+// import { useDispatch, useSelector } from 'react-redux';
 import './todoList.scss';
 import TodoListItem from '../todoListItem/TodoListItem';
-import { useEffect } from 'react';
-import { getTodosAsync,toggleCompleteAsync } from '../todo/todoSlice';
+// import { useEffect } from 'react';
+// import { getTodosAsync,toggleCompleteAsync } from '../todo/todoSlice';
 import Spinner from "../spinner/Spinner";
-import { useGetTodosQuery} from '../api/apiSlice';
+import { useGetTodosQuery, useToggleCompleteTodoMutation} from '../api/apiSlice';
 
 const TodoList = () => {
     // const todos = useSelector(state => state.todos.todos);
     // const todosLoadingStatus = useSelector(state => state.todos.todosLoadingStatus);
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
 
     const {
         data: todos = [],
@@ -20,16 +20,22 @@ const TodoList = () => {
         isFetching
     } = useGetTodosQuery();
 
+    const [toggleCompleteTodo] = useToggleCompleteTodoMutation();
 
     // useEffect(() => {
     //     dispatch(getTodosAsync())
     // }, [dispatch]);
 
 
-    const onClick = (id,completed) => {
-        dispatch(
-            toggleCompleteAsync({ id, completed: !completed })
-        )
+    const onClick = async (id,completed) => {
+        try {
+            await toggleCompleteTodo({id, completed: !completed}).unwrap();
+        } catch (err) {
+            console.error('Failed to toggle todo: ', err)
+        }
+        // dispatch(
+        //     toggleCompleteAsync({ id, completed: !completed })
+        // )
     }
 
     // if (todosLoadingStatus === "loading") {

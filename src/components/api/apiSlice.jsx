@@ -34,9 +34,17 @@ export const apiSlice = createApi({
             method: 'DELETE',
         }),
         invalidatesTags: ['Todos']
+      }),
+      toggleCompleteTodo: builder.mutation({
+        query: (todo) => ({
+          url: `todos/${todo.id}`,
+          method: 'PATCH',
+          body: todo
+        }),
+        invalidatesTags: ['Todos']
       })
     })
   })
   
   // Export the auto-generated hook for the `getPosts` query endpoint
-  export const { useGetTodosQuery, useAddTodoMutation, useDeleteTodoMutation } = apiSlice;
+  export const { useGetTodosQuery, useAddTodoMutation, useDeleteTodoMutation, useToggleCompleteTodoMutation } = apiSlice;

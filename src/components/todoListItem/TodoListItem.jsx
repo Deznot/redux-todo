@@ -1,15 +1,21 @@
-import { useDispatch } from "react-redux";
+// import { useDispatch } from "react-redux";
 import "./todoListItem.scss";
-import { deleteTodosAsync, toggleCompleteAsync } from "../todo/todoSlice";
-import { useDeleteTodoMutation } from '../api/apiSlice';
+// import { deleteTodosAsync, toggleCompleteAsync } from "../todo/todoSlice";
+import { useDeleteTodoMutation, useToggleCompleteTodoMutation } from '../api/apiSlice';
 
 const TodoListItem = ({ id, title, completed, ...props }) => {
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
     const [deleteTodo, {isLoading}] = useDeleteTodoMutation();
-    const handleCheckboxClick = () => {
-        dispatch(
-            toggleCompleteAsync({ id, completed: !completed })
-        )
+    const [toggleCompleteTodo] = useToggleCompleteTodoMutation();
+    const handleCheckboxClick = async () => {
+        try {
+            await toggleCompleteTodo({id, completed: !completed}).unwrap();
+        } catch (err) {
+            console.error('Failed to toggle todo: ', err)
+        }
+        // dispatch(
+        //     toggleCompleteAsync({ id, completed: !completed })
+        // )
     }
 
     const hundleDeleteClick = async (e) => {
