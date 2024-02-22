@@ -13,7 +13,7 @@
     {
       "id": "3",
       "title": "todo3",
-      "completed": true
+      "completed": false
     },
     {
       "id": "4",
@@ -38,7 +38,7 @@
     {
       "id": "1YQ9YhPhPJtKy7UyTenQg",
       "title": "e",
-      "completed": false
+      "completed": true
     },
     {
       "id": "NWlGM9IbREv9vonxTTqJc",
